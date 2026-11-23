@@ -6,7 +6,7 @@ Before footage goes into an AI pipeline you need to know what you have: which fi
 
 ## How it works
 
-1. **Audit** (built): scan a folder with `ffprobe` and write a CSV report, one row per file. It covers real orientation (including the rotation flag), length, size, fps, codec, audio, flags such as `very_short` and `possible_duplicate`, and a readiness verdict (`ready`, `needs_prep`, `unsupported`). Read-only; no Runway calls, no credits.
+1. **Audit** (built): scan a folder with `ffprobe` and write a CSV report (default `YYYY-MM-DD_audit.csv`), one row per file. It covers real orientation (including the rotation flag), length, size, fps, codec, audio, flags such as `very_short` and `possible_duplicate`, and a readiness verdict (`ready`, `needs_prep`, `unsupported`). Read-only; no Runway calls, no credits.
 2. **Review**: open the CSV and fill in `send`, `in`, `out`, and optionally `prompt` and `seed` on the rows you want transformed.
 3. **Transform** (planned): prepare each selected clip locally (trim, bake in rotation, downscale to 1080p), run it through Aleph 2.0, and log the result. Dry run by default, with a credit cap.
 
@@ -18,7 +18,7 @@ Re-running the audit merges into an existing report and keeps your selections.
 python3 -m venv .venv && .venv/bin/pip install -e . pytest
 brew install ffmpeg
 
-.venv/bin/media-audit audit path/to/folder -o audit.csv [--very-short 5]
+.venv/bin/media-audit audit path/to/folder [-o report.csv] [--very-short 5]
 .venv/bin/pytest
 ```
 
